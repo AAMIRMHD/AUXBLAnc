@@ -60,23 +60,24 @@ export default function WhyChooseUs() {
           </div>
 
           {/* Right Points Column */}
-          <div className="lg:col-span-7 space-y-8">
+          <div className="lg:col-span-7 space-y-6">
             {points.map((point, idx) => (
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.03 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 key={idx}
-                className="flex items-start space-x-5 border-b border-slate-100 pb-6 last:border-0 last:pb-0"
+                className="flex flex-col items-center text-center border border-slate-100 rounded-xl px-8 py-6 bg-white shadow-sm cursor-default"
               >
                 {/* Gold Checkmark icon */}
-                <div className="w-6 h-6 rounded-full border border-accent-gold/45 flex items-center justify-center shrink-0 mt-0.5 bg-background-ivory">
+                <div className="w-8 h-8 rounded-full border border-accent-gold/45 flex items-center justify-center shrink-0 mb-4 bg-background-ivory">
                   <svg className="w-4 h-4 text-accent-gold stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                
+
                 <div>
                   <h3 className="font-serif text-xl font-bold text-primary-navy mb-2">
                     {point.title}

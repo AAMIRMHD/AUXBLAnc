@@ -119,9 +119,12 @@ export default function Navbar() {
           {/* CTA Group */}
           <div className="hidden lg:flex items-center justify-center">
             <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                setMobileMenuOpen(false);
+                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+              }}
               className="btn-primary inline-flex items-center justify-center font-sans text-xs font-bold tracking-wider uppercase px-5 py-2 rounded-full shadow-sm cursor-pointer"
             >
               Book a Consultation
@@ -170,9 +173,12 @@ export default function Navbar() {
                 className="pt-6"
               >
                 <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setMobileMenuOpen(false);
+                    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                  }}
                   className="btn-primary inline-block w-full text-center font-sans text-xs font-bold tracking-wider uppercase px-8 py-4 rounded-full cursor-pointer"
                 >
                   Book a Consultation

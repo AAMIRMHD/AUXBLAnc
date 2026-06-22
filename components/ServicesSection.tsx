@@ -73,39 +73,42 @@ export default function ServicesSection() {
     },
   ];
 
-  const whatsappUrl = "https://wa.me/917591938118?text=Hi%20Aux%20Blanc%20Financial%20Advisory%2C%20I%20would%20like%20to%20know%20more%20about%20your%20services.";
+  const ease = [0.16, 1, 0.3, 1];
 
-  const containerVariants = {
-    hidden: {},
+  const headingVariants = {
+    hidden: { opacity: 0, y: 40, filter: "blur(6px)" },
     visible: {
-      transition: {
-        staggerChildren: 0.08,
-      },
+      opacity: 1, y: 0, filter: "blur(0px)",
+      transition: { duration: 0.9, ease },
     },
   };
 
+  const containerVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } },
+  };
+
   const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 50, scale: 0.96 },
     visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1],
-      },
+      opacity: 1, y: 0, scale: 1,
+      transition: { duration: 0.7, ease },
     },
   };
 
   return (
-    <section id="services" className="py-24 bg-background-ivory relative">
+    <section id="services" className="py-24 bg-background-ivory relative overflow-hidden">
+      {/* Decorative background blur orb */}
+      <div className="absolute -top-32 -right-32 w-96 h-96 bg-accent-gold/5 rounded-full blur-[100px] pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-20">
-        
+
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          variants={headingVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
           className="max-w-2xl text-left mb-16"
         >
           <span className="font-sans text-[10px] md:text-xs font-bold tracking-[0.2em] text-accent-gold uppercase mb-3 block">
@@ -121,44 +124,36 @@ export default function ServicesSection() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-60px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          style={{ perspective: "1200px" }}
         >
           {services.map((service) => (
             <motion.div
               key={service.id}
               variants={cardVariants}
-              className="premium-card p-8 flex flex-col justify-between min-h-[260px] relative group"
+              whileHover={{
+                scale: 1.04,
+                rotateX: -3,
+                rotateY: 3,
+                boxShadow: "0 30px 60px -15px rgba(10,29,55,0.13), 0 0 0 1px rgba(197,168,128,0.2)",
+                transition: { duration: 0.3, ease: "easeOut" },
+              }}
+              className="premium-card p-8 flex flex-col justify-between min-h-[240px] relative group"
+              style={{ transformStyle: "preserve-3d", willChange: "transform" }}
             >
               <div>
-                {/* Icon Container */}
-                <div className="mb-6 w-11 h-11 flex items-center justify-center bg-background-ivory border border-slate-250/60 group-hover:border-accent-gold/50 group-hover:bg-white transition-all duration-500 group-hover:scale-105">
+                {/* Icon */}
+                <div className="mb-6 w-11 h-11 flex items-center justify-center bg-background-ivory border border-slate-200/60 group-hover:border-accent-gold/50 group-hover:bg-white transition-all duration-500 group-hover:scale-105">
                   {service.icon}
                 </div>
-                
-                {/* Title */}
                 <h3 className="font-serif text-xl font-bold text-primary-navy mb-3">
                   {service.title}
                 </h3>
-                
-                {/* Description */}
-                <p className="font-sans text-sm text-charcoal/85 leading-relaxed font-normal mb-6">
+                <p className="font-sans text-sm text-charcoal/85 leading-relaxed font-normal">
                   {service.description}
                 </p>
               </div>
-
-              {/* Learn More link */}
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-sans text-[10px] font-bold tracking-widest text-accent-gold uppercase flex items-center group/link mt-auto cursor-pointer"
-              >
-                Learn More
-                <svg className="w-3.5 h-3.5 ml-2 transform transition-transform duration-300 group-hover/link:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </a>
             </motion.div>
           ))}
         </motion.div>

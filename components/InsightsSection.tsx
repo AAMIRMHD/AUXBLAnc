@@ -34,57 +34,47 @@ export default function InsightsSection() {
     },
   ];
 
-  const whatsappUrl = "https://wa.me/917591938118?text=Hi%20Aux%20Blanc%20Financial%20Advisory%2C%20I%20would%2520like%20to%20read%20your%20latest%20insights.";
+  const ease = [0.16, 1, 0.3, 1];
+
+  const headingVariants = {
+    hidden: { opacity: 0, y: 40, filter: "blur(6px)" },
+    visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.9, ease } },
+  };
 
   const containerVariants = {
     hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
+    visible: { transition: { staggerChildren: 0.14, delayChildren: 0.1 } },
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 60, scale: 0.95, filter: "blur(4px)" },
     visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1],
-      },
+      opacity: 1, y: 0, scale: 1, filter: "blur(0px)",
+      transition: { duration: 0.75, ease },
     },
   };
 
   return (
-    <section id="insights" className="py-24 bg-background-ivory relative border-b border-slate-100">
+    <section id="insights" className="py-24 bg-background-ivory relative border-b border-slate-100 overflow-hidden">
+      {/* Decorative orb */}
+      <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-accent-gold/5 rounded-full blur-[100px] pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-20">
-        
+
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6"
+          variants={headingVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="mb-16"
         >
-          <div>
-            <span className="font-sans text-[10px] md:text-xs font-bold tracking-[0.2em] text-accent-gold uppercase mb-3 block">
-              Knowledge Hub
-            </span>
-            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary-navy tracking-tight leading-tight">
-              Business Insights
-            </h2>
-          </div>
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-sans text-[10px] font-bold tracking-widest text-accent-gold uppercase border-b border-accent-gold/40 hover:border-accent-gold transition-colors duration-300 pb-1 cursor-pointer"
-          >
-            View All Insights
-          </a>
+          <span className="font-sans text-[10px] md:text-xs font-bold tracking-[0.2em] text-accent-gold uppercase mb-3 block">
+            Knowledge Hub
+          </span>
+          <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary-navy tracking-tight leading-tight">
+            Business Insights
+          </h2>
         </motion.div>
 
         {/* Articles Grid */}
@@ -92,47 +82,40 @@ export default function InsightsSection() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-60px" }}
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          style={{ perspective: "1200px" }}
         >
           {articles.map((art, idx) => (
             <motion.article
               key={idx}
               variants={cardVariants}
-              className="premium-card p-8 flex flex-col justify-between h-[350px] group"
+              whileHover={{
+                scale: 1.04,
+                rotateX: -2,
+                rotateY: 2,
+                boxShadow: "0 30px 60px -15px rgba(10,29,55,0.12), 0 0 0 1px rgba(197,168,128,0.2)",
+                transition: { duration: 0.3, ease: "easeOut" },
+              }}
+              className="premium-card p-8 flex flex-col justify-start h-full group"
+              style={{ transformStyle: "preserve-3d", willChange: "transform" }}
             >
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <span className="font-sans text-[9px] font-bold text-accent-gold tracking-widest uppercase">
-                    {art.category}
-                  </span>
-                  <span className="font-sans text-[9px] text-charcoal/50 font-bold">
-                    {art.readTime}
-                  </span>
-                </div>
-
-                <h3 className="font-serif text-2xl font-bold text-primary-navy group-hover:text-accent-gold transition-colors duration-300 mb-4 line-clamp-2 leading-snug">
-                  {art.title}
-                </h3>
-
-                <p className="font-sans text-sm text-charcoal/85 leading-relaxed font-normal line-clamp-3">
-                  {art.summary}
-                </p>
+              <div className="flex justify-between items-center mb-6">
+                <span className="font-sans text-[9px] font-bold text-accent-gold tracking-widest uppercase">
+                  {art.category}
+                </span>
+                <span className="font-sans text-[9px] text-charcoal/50 font-bold">
+                  {art.readTime}
+                </span>
               </div>
 
-              <div className="flex justify-between items-center border-t border-slate-100 pt-4 mt-6">
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-sans text-[10px] font-bold tracking-widest text-accent-gold uppercase flex items-center group/link cursor-pointer"
-                >
-                  Read Article
-                  <svg className="w-3.5 h-3.5 ml-2 transform transition-transform duration-300 group-hover/link:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </a>
-              </div>
+              <h3 className="font-serif text-2xl font-bold text-primary-navy group-hover:text-accent-gold transition-colors duration-300 mb-4 leading-snug">
+                {art.title}
+              </h3>
+
+              <p className="font-sans text-sm text-charcoal/85 leading-relaxed font-normal">
+                {art.summary}
+              </p>
             </motion.article>
           ))}
         </motion.div>

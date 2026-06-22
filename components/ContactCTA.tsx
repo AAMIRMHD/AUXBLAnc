@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone, Mail, Clock, Check } from "lucide-react";
 
@@ -14,13 +14,14 @@ export default function ContactCTA() {
     name: "",
     email: "",
     phone: "",
-    service: "incorporation",
     message: "",
   });
 
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const submittedName = useRef("");
+  const submittedPhone = useRef("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.phone || !formData.email) {
       alert("Please fill in all mandatory fields.");
@@ -29,20 +30,32 @@ export default function ContactCTA() {
 
     setStatus("submitting");
 
-    // Simulate API posting latency
-    setTimeout(() => {
-      setStatus("success");
-    }, 1500);
+    try {
+      const res = await fetch("https://formspree.io/f/xpqgzwwp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+        }),
+      });
+
+      if (res.ok) {
+        submittedName.current = formData.name;
+        submittedPhone.current = formData.phone;
+        setStatus("success");
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      } else {
+        throw new Error("Submission failed");
+      }
+    } catch {
+      alert("Something went wrong. Please try again or contact us directly.");
+      setStatus("idle");
+    }
   };
 
-  const services = [
-    { value: "incorporation", label: "Company Incorporation / LLP" },
-    { value: "gst", label: "GST Registration & Filing" },
-    { value: "accounting", label: "Bookkeeping & Accounting" },
-    { value: "tax", label: "Tax Consultancy & Planning" },
-    { value: "roc", label: "ROC & Annual Compliance" },
-    { value: "mgmt", label: "Management Consulting" },
-  ];
 
   return (
     <section id="contact" className="py-24 bg-primary-navy relative overflow-hidden text-left">
@@ -222,36 +235,18 @@ export default function ContactCTA() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block font-sans text-[10px] font-bold text-white/50 uppercase mb-2">
-                        Email Address *
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full bg-white/[0.02] border border-white/10 focus:border-accent-gold focus:bg-white/[0.04] outline-none px-4 py-3 text-xs text-white transition-all duration-300"
-                        placeholder="john@example.com"
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-sans text-[10px] font-bold text-white/50 uppercase mb-2">
-                        Required Service
-                      </label>
-                      <select
-                        value={formData.service}
-                        onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                        className="w-full bg-primary-navy border border-white/10 focus:border-accent-gold focus:bg-white/[0.04] outline-none px-4 py-3 text-xs text-white/80 transition-all duration-300 cursor-pointer"
-                      >
-                        {services.map((s) => (
-                          <option key={s.value} value={s.value} className="bg-primary-navy text-white/95">
-                            {s.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                  <div>
+                    <label className="block font-sans text-[10px] font-bold text-white/50 uppercase mb-2">
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full bg-white/[0.02] border border-white/10 focus:border-accent-gold focus:bg-white/[0.04] outline-none px-4 py-3 text-xs text-white transition-all duration-300"
+                      placeholder="john@example.com"
+                    />
                   </div>
 
                   <div>
@@ -309,9 +304,20 @@ export default function ContactCTA() {
                       Inquiry Received
                     </h3>
                     <p className="font-sans text-xs text-white/70 leading-relaxed font-light max-w-sm mx-auto">
-                      Thank you, <span className="text-white font-medium">{formData.name}</span>! A senior financial advisor will review your request and get in touch at <span className="text-white font-medium">{formData.phone}</span> within 2 business hours.
+                      Thank you, <span className="text-white font-medium">{submittedName.current}</span>! A senior financial advisor will review your request and get in touch at <span className="text-white font-medium">{submittedPhone.current}</span> within 2 business hours.
                     </p>
                   </div>
+
+                  {/* Send Another Enquiry Button */}
+                  <button
+                    onClick={() => setStatus("idle")}
+                    className="mt-2 inline-flex items-center gap-2 font-sans text-xs font-semibold tracking-wider text-accent-gold uppercase border border-accent-gold/30 hover:border-accent-gold hover:bg-accent-gold/10 transition-all duration-300 px-6 py-3 rounded-full cursor-pointer"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Send Another Enquiry
+                  </button>
                 </motion.div>
               )}
             </AnimatePresence>

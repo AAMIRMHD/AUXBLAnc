@@ -2,27 +2,72 @@
 
 import { motion } from "framer-motion";
 
-export default function Hero() {
-  const whatsappUrl = "https://wa.me/917591938118?text=Hi%20Aux%20Blanc%20Financial%20Advisory%2C%20I%20would%20like%20to%20know%20more%20about%20your%2520services.";
+const headline1 = "Your Trusted Partner for";
+const headline2Words = ["Business,", "Finance", "&"];
 
-  const containerVariants = {
-    hidden: {},
+export default function Hero() {
+  const whatsappUrl =
+    "https://wa.me/917591938118?text=Hi%20Aux%20Blanc%20Financial%20Advisory%2C%20I%20would%20like%20to%20know%20more%20about%20your%2520services.";
+
+  /* ── Shared easing ── */
+  const ease = [0.16, 1, 0.3, 1];
+
+  /* ── Label line draw ── */
+  const lineVariant = {
+    hidden: { scaleX: 0, originX: 0 },
+    visible: { scaleX: 1, transition: { duration: 0.6, ease } },
+  };
+
+  /* ── Label text blur-in ── */
+  const labelVariant = {
+    hidden: { opacity: 0, filter: "blur(8px)", x: -8 },
     visible: {
-      transition: {
-        staggerChildren: 0.1,
-      },
+      opacity: 1,
+      filter: "blur(0px)",
+      x: 0,
+      transition: { duration: 0.7, ease },
     },
   };
 
-  const fadeUpVariants = {
-    hidden: { opacity: 0, y: 20 },
+  /* ── Word reveal (clip from bottom) ── */
+  const wordVariant = {
+    hidden: { y: "110%", opacity: 0 },
+    visible: {
+      y: "0%",
+      opacity: 1,
+      transition: { duration: 0.75, ease },
+    },
+  };
+
+  /* ── Paragraph fade + slide ── */
+  const paraVariant = {
+    hidden: { opacity: 0, y: 24, filter: "blur(4px)" },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1],
-      },
+      filter: "blur(0px)",
+      transition: { duration: 0.9, ease },
+    },
+  };
+
+  /* ── Button spring pop ── */
+  const btnVariant = {
+    hidden: { opacity: 0, scale: 0.88, y: 16 },
+    visible: (i: number) => ({
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: { duration: 0.6, ease, delay: i * 0.12 },
+    }),
+  };
+
+  /* ── Gold underline draw ── */
+  const underlineVariant = {
+    hidden: { pathLength: 0, opacity: 0 },
+    visible: {
+      pathLength: 1,
+      opacity: 1,
+      transition: { duration: 0.9, ease: [0.4, 0, 0.2, 1], delay: 0.1 },
     },
   };
 
@@ -32,155 +77,142 @@ export default function Hero() {
       className="min-h-screen pt-28 md:pt-36 pb-12 flex flex-col justify-between relative overflow-hidden bg-background-ivory"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 w-full flex flex-col justify-center flex-1 relative z-20">
-        
-        {/* Left Editorial Copy */}
+
+        {/* ── Accent Label ── */}
         <motion.div
-          variants={containerVariants}
+          className="flex items-center space-x-3 mb-8"
           initial="hidden"
           animate="visible"
-          className="max-w-4xl flex flex-col justify-center text-left"
+          transition={{ staggerChildren: 0.15 }}
         >
-          {/* Accent Label */}
-          <motion.div
-            variants={fadeUpVariants}
-            className="flex items-center space-x-3 mb-6"
+          <motion.span
+            variants={lineVariant}
+            className="h-[1.5px] w-8 bg-accent-gold block"
+          />
+          <motion.span
+            variants={labelVariant}
+            className="font-sans text-[10px] md:text-xs font-bold tracking-[0.25em] text-accent-gold uppercase"
           >
-            <span className="h-[1.5px] w-6 bg-accent-gold" />
-            <span className="font-sans text-[10px] md:text-xs font-bold tracking-[0.2em] text-accent-gold uppercase">
-              Financial & Corporate Advisory
-            </span>
-          </motion.div>
-
-          {/* Headline */}
-          <motion.h1
-            variants={fadeUpVariants}
-            className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-primary-navy leading-[1.08] mb-6"
-          >
-            Your Trusted Partner for <br />
-            Business, Finance & <span className="font-serif italic text-accent-gold">Compliance</span>.
-          </motion.h1>
-
-          {/* Supporting Text */}
-          <motion.p
-            variants={fadeUpVariants}
-            className="font-sans text-base md:text-lg text-charcoal/90 font-medium max-w-3xl leading-relaxed mb-10"
-          >
-            Aux Blanc Financial Advisory helps entrepreneurs, startups, and growing businesses navigate management consultancy, accounting, taxation, company incorporation, and recurring regulatory compliance.
-          </motion.p>
-
-          {/* Action Buttons */}
-          <motion.div
-            variants={fadeUpVariants}
-            className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-4 sm:space-y-0 sm:space-x-6"
-          >
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary text-center font-sans text-xs font-bold tracking-wider uppercase px-8 py-4 rounded-none shadow-sm cursor-pointer"
-            >
-              Book a Consultation
-            </a>
-
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-secondary text-center font-sans text-xs font-bold tracking-wider uppercase px-8 py-4 rounded-none cursor-pointer"
-            >
-              WhatsApp Us
-            </a>
-          </motion.div>
+            Financial &amp; Corporate Advisory
+          </motion.span>
         </motion.div>
-      </div>
 
-      {/* Legacy Partners Logo Strip */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6, duration: 0.8 }}
-        className="w-full border-t border-charcoal/10 bg-background-ivory/50 backdrop-blur-sm py-8 relative z-20"
-      >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <span className="font-sans text-[9px] font-bold tracking-[0.25em] text-charcoal/50 uppercase shrink-0">
-            Our Legacy Partners
-          </span>
-          <div className="flex flex-wrap items-center gap-x-12 md:gap-x-16 gap-y-6">
-            {/* Pelago */}
-            <a
-              href="https://www.pelago.co"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-2.5 group cursor-pointer transition-all duration-300 opacity-60 hover:opacity-100"
-            >
-              <svg
-                className="w-5 h-5 text-primary-navy group-hover:text-accent-gold transition-colors duration-300"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M22 12A10 10 0 1 1 12 2v10z" />
-                <path d="M12 2a10 10 0 0 1 10 10H12z" />
-              </svg>
-              <span className="font-serif text-base md:text-lg font-bold tracking-wide text-primary-navy group-hover:text-accent-gold transition-colors duration-300">
-                PELAGO
-              </span>
-            </a>
-
-            {/* Tass */}
-            <a
-              href="https://tasshamjit.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-2.5 group cursor-pointer transition-all duration-300 opacity-60 hover:opacity-100"
-            >
-              <svg
-                className="w-5 h-5 text-primary-navy group-hover:text-accent-gold transition-colors duration-300"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <path d="M9 17V9h6" />
-              </svg>
-              <span className="font-serif text-base md:text-lg font-bold tracking-wide text-primary-navy group-hover:text-accent-gold transition-colors duration-300">
-                TASS
-              </span>
-            </a>
-
-            {/* Hamjid */}
-            <a
-              href="https://tasshamjit.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-2.5 group cursor-pointer transition-all duration-300 opacity-60 hover:opacity-100"
-            >
-              <svg
-                className="w-5 h-5 text-primary-navy group-hover:text-accent-gold transition-colors duration-300"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                <path d="M8 11h8" />
-                <path d="M12 7v8" />
-              </svg>
-              <span className="font-serif text-base md:text-lg font-bold tracking-wide text-primary-navy group-hover:text-accent-gold transition-colors duration-300">
-                HAMJID
-              </span>
-            </a>
-          </div>
+        {/* ── Headline line 1 — clip reveal ── */}
+        <div className="overflow-hidden mb-2">
+          <motion.h1
+            className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-primary-navy leading-[1.08]"
+            initial={{ y: "110%", opacity: 0 }}
+            animate={{ y: "0%", opacity: 1 }}
+            transition={{ duration: 0.85, ease, delay: 0.2 }}
+          >
+            {headline1}
+          </motion.h1>
         </div>
-      </motion.div>
+
+        {/* ── Headline line 2 — word by word ── */}
+        <div className="flex flex-wrap items-baseline gap-x-4 mb-6 overflow-hidden">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            transition={{ staggerChildren: 0.1, delayChildren: 0.55 }}
+            className="flex flex-wrap items-baseline gap-x-4"
+          >
+            {headline2Words.map((word) => (
+              <div key={word} className="overflow-hidden">
+                <motion.span
+                  variants={wordVariant}
+                  className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-primary-navy leading-[1.08] inline-block"
+                >
+                  {word}
+                </motion.span>
+              </div>
+            ))}
+
+            {/* ── "Compliance" with animated gold underline ── */}
+            <div className="overflow-hidden">
+              <motion.span
+                variants={wordVariant}
+                className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-accent-gold italic leading-[1.08] inline-block relative"
+              >
+                Compliance
+                {/* SVG underline draw */}
+                <motion.svg
+                  className="absolute -bottom-1 left-0 w-full"
+                  viewBox="0 0 200 8"
+                  preserveAspectRatio="none"
+                  height="8"
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <motion.path
+                    d="M0 5 Q50 1 100 5 Q150 9 200 5"
+                    stroke="#C5A880"
+                    strokeWidth="2.5"
+                    fill="none"
+                    strokeLinecap="round"
+                    variants={underlineVariant}
+                  />
+                </motion.svg>
+              </motion.span>
+            </div>
+
+            {/* Period */}
+            <div className="overflow-hidden">
+              <motion.span
+                variants={wordVariant}
+                className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-primary-navy leading-[1.08] inline-block"
+              >
+                .
+              </motion.span>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* ── Supporting Paragraph ── */}
+        <motion.p
+          variants={paraVariant}
+          initial="hidden"
+          animate="visible"
+          transition={{ delay: 1.0 }}
+          className="font-sans text-base md:text-lg text-charcoal/90 font-medium max-w-2xl leading-relaxed mb-10"
+        >
+          Aux Blanc Financial Advisory helps entrepreneurs, startups, and growing
+          businesses navigate management consultancy, accounting, taxation,
+          company incorporation, and recurring regulatory compliance.
+        </motion.p>
+
+        {/* ── Action Buttons ── */}
+        <motion.div
+          className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-4 sm:space-y-0 sm:space-x-6"
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.a
+            href="#contact"
+            custom={0}
+            variants={btnVariant}
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="btn-primary text-center font-sans text-xs font-bold tracking-wider uppercase px-10 py-4 rounded-full shadow-sm cursor-pointer"
+          >
+            Book a Consultation
+          </motion.a>
+
+          <motion.a
+            href={whatsappUrl}
+            custom={1}
+            variants={btnVariant}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-secondary text-center font-sans text-xs font-bold tracking-wider uppercase px-10 py-4 rounded-full cursor-pointer"
+          >
+            WhatsApp Us
+          </motion.a>
+        </motion.div>
+
+      </div>
     </section>
   );
 }
