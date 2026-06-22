@@ -6,7 +6,6 @@ import IntroSection from "@/components/IntroSection";
 import ServicesSection from "@/components/ServicesSection";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import ProcessSection from "@/components/ProcessSection";
-import CompanyFormation from "@/components/CompanyFormation";
 import InsightsSection from "@/components/InsightsSection";
 import ContactCTA from "@/components/ContactCTA";
 import Footer from "@/components/Footer";
@@ -32,16 +31,13 @@ export default function Home() {
       {/* 6. Process Section */}
       <ProcessSection />
 
-      {/* 7. Company Formation Section */}
-      <CompanyFormation />
-
-      {/* 8. Insights Section */}
+      {/* 7. Insights Section */}
       <InsightsSection />
 
-      {/* 9. Contact CTA Section */}
+      {/* 8. Contact CTA Section */}
       <ContactCTA />
 
-      {/* 10. Footer */}
+      {/* 9. Footer */}
       <Footer />
     </main>
   );

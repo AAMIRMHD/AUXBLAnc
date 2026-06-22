@@ -29,9 +29,9 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="min-h-screen pt-28 md:pt-36 pb-16 flex flex-col justify-center relative overflow-hidden bg-background-ivory"
+      className="min-h-screen pt-28 md:pt-36 pb-12 flex flex-col justify-between relative overflow-hidden bg-background-ivory"
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-20">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 w-full flex flex-col justify-center flex-1 relative z-20">
         
         {/* Left Editorial Copy */}
         <motion.div
@@ -71,7 +71,7 @@ export default function Hero() {
           {/* Action Buttons */}
           <motion.div
             variants={fadeUpVariants}
-            className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-4 sm:space-y-0 sm:space-x-6 mb-8"
+            className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-4 sm:space-y-0 sm:space-x-6"
           >
             <a
               href={whatsappUrl}
@@ -92,8 +92,95 @@ export default function Hero() {
             </a>
           </motion.div>
         </motion.div>
-        
       </div>
+
+      {/* Legacy Partners Logo Strip */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.8 }}
+        className="w-full border-t border-charcoal/10 bg-background-ivory/50 backdrop-blur-sm py-8 relative z-20"
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <span className="font-sans text-[9px] font-bold tracking-[0.25em] text-charcoal/50 uppercase shrink-0">
+            Our Legacy Partners
+          </span>
+          <div className="flex flex-wrap items-center gap-x-12 md:gap-x-16 gap-y-6">
+            {/* Pelago */}
+            <a
+              href="https://www.pelago.co"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2.5 group cursor-pointer transition-all duration-300 opacity-60 hover:opacity-100"
+            >
+              <svg
+                className="w-5 h-5 text-primary-navy group-hover:text-accent-gold transition-colors duration-300"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M22 12A10 10 0 1 1 12 2v10z" />
+                <path d="M12 2a10 10 0 0 1 10 10H12z" />
+              </svg>
+              <span className="font-serif text-base md:text-lg font-bold tracking-wide text-primary-navy group-hover:text-accent-gold transition-colors duration-300">
+                PELAGO
+              </span>
+            </a>
+
+            {/* Tass */}
+            <a
+              href="https://tasshamjit.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2.5 group cursor-pointer transition-all duration-300 opacity-60 hover:opacity-100"
+            >
+              <svg
+                className="w-5 h-5 text-primary-navy group-hover:text-accent-gold transition-colors duration-300"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M9 17V9h6" />
+              </svg>
+              <span className="font-serif text-base md:text-lg font-bold tracking-wide text-primary-navy group-hover:text-accent-gold transition-colors duration-300">
+                TASS
+              </span>
+            </a>
+
+            {/* Hamjid */}
+            <a
+              href="https://tasshamjit.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2.5 group cursor-pointer transition-all duration-300 opacity-60 hover:opacity-100"
+            >
+              <svg
+                className="w-5 h-5 text-primary-navy group-hover:text-accent-gold transition-colors duration-300"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <path d="M8 11h8" />
+                <path d="M12 7v8" />
+              </svg>
+              <span className="font-serif text-base md:text-lg font-bold tracking-wide text-primary-navy group-hover:text-accent-gold transition-colors duration-300">
+                HAMJID
+              </span>
+            </a>
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 }
