@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 interface Service {
   id: string;
@@ -10,6 +11,14 @@ interface Service {
 }
 
 export default function ServicesSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const orbY = useTransform(scrollYProgress, [0, 1], [80, -80]);
+  const orbX = useTransform(scrollYProgress, [0, 1], [-20, 40]);
+
   const services: Service[] = [
     {
       id: "mgmt-consultancy",
@@ -89,17 +98,20 @@ export default function ServicesSection() {
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 50, scale: 0.96 },
+    hidden: { opacity: 0, y: 60, scale: 0.94, rotateX: 8 },
     visible: {
-      opacity: 1, y: 0, scale: 1,
-      transition: { duration: 0.7, ease },
+      opacity: 1, y: 0, scale: 1, rotateX: 0,
+      transition: { duration: 0.75, ease },
     },
   };
 
   return (
-    <section id="services" className="py-24 bg-background-ivory relative overflow-hidden">
-      {/* Decorative background blur orb */}
-      <div className="absolute -top-32 -right-32 w-96 h-96 bg-accent-gold/5 rounded-full blur-[100px] pointer-events-none" />
+    <section ref={sectionRef} id="services" className="py-24 bg-background-ivory relative overflow-hidden">
+      {/* Parallax decorative orb */}
+      <motion.div
+        style={{ y: orbY, x: orbX }}
+        className="absolute -top-32 -right-32 w-96 h-96 bg-accent-gold/5 rounded-full blur-[100px] pointer-events-none"
+      />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-20">
 

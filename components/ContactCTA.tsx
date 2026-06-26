@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Phone, Mail, Clock, Check } from "lucide-react";
+import { staggerContainer, fadeLeft, fadeRight } from "@/lib/motion";
 
 export default function ContactCTA() {
   const phoneNum = "+91 75919 38118";
@@ -20,6 +21,15 @@ export default function ContactCTA() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
   const submittedName = useRef("");
   const submittedPhone = useRef("");
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const orbY1 = useTransform(scrollYProgress, [0, 1], [60, -80]);
+  const orbY2 = useTransform(scrollYProgress, [0, 1], [-40, 100]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,23 +68,23 @@ export default function ContactCTA() {
 
 
   return (
-    <section id="contact" className="py-24 bg-primary-navy relative overflow-hidden text-left">
+    <section ref={sectionRef} id="contact" className="py-24 bg-primary-navy relative overflow-hidden text-left">
       {/* Subtle background visual overlay lines */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0" />
 
-      {/* Decorative radial gradients for premium feel */}
-      <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-accent-gold/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent-gold/10 rounded-full blur-[120px] pointer-events-none" />
+      {/* Parallax decorative gradients */}
+      <motion.div style={{ y: orbY1 }} className="absolute top-1/4 -left-1/4 w-96 h-96 bg-accent-gold/10 rounded-full blur-[120px] pointer-events-none" />
+      <motion.div style={{ y: orbY2 }} className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent-gold/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-stretch">
           
           {/* Left Column: Contact Details */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={fadeLeft}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 flex flex-col justify-between"
           >
             <div>
@@ -97,10 +107,18 @@ export default function ContactCTA() {
               </p>
 
               {/* Contact Channels List */}
-              <div className="space-y-5 mb-10">
+              <motion.div
+                variants={staggerContainer(0.1, 0.2)}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="space-y-5 mb-10"
+              >
                 {/* Phone Channel */}
-                <a
+                <motion.a
+                  variants={fadeLeft}
                   href={phoneUrl}
+                  whileHover={{ x: 6, transition: { duration: 0.25 } }}
                   className="flex items-center space-x-4 p-4 border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 group"
                 >
                   <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/[0.02] group-hover:border-accent-gold/40 group-hover:bg-accent-gold/5 transition-colors duration-300">
@@ -114,11 +132,13 @@ export default function ContactCTA() {
                       {phoneNum}
                     </span>
                   </div>
-                </a>
+                </motion.a>
 
                 {/* Email Channel */}
-                <a
+                <motion.a
+                  variants={fadeLeft}
                   href={emailUrl}
+                  whileHover={{ x: 6, transition: { duration: 0.25 } }}
                   className="flex items-center space-x-4 p-4 border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 group"
                 >
                   <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/[0.02] group-hover:border-accent-gold/40 group-hover:bg-accent-gold/5 transition-colors duration-300">
@@ -132,13 +152,15 @@ export default function ContactCTA() {
                       {emailUrl.replace("mailto:", "")}
                     </span>
                   </div>
-                </a>
+                </motion.a>
 
                 {/* WhatsApp Channel */}
-                <a
+                <motion.a
+                  variants={fadeLeft}
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  whileHover={{ x: 6, transition: { duration: 0.25 } }}
                   className="flex items-center space-x-4 p-4 border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 group"
                 >
                   <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/[0.02] group-hover:border-accent-gold/40 group-hover:bg-accent-gold/5 transition-colors duration-300">
@@ -159,8 +181,8 @@ export default function ContactCTA() {
                       Chat with an Advisor
                     </span>
                   </div>
-                </a>
-              </div>
+                </motion.a>
+              </motion.div>
             </div>
 
             {/* Quick Metadata Info */}
@@ -181,10 +203,10 @@ export default function ContactCTA() {
 
           {/* Right Column: Callback Request Form */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={fadeRight}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             className="lg:col-span-7 bg-white/[0.03] border border-white/10 p-8 md:p-10 rounded-3xl relative overflow-hidden flex flex-col justify-center shadow-xl backdrop-blur-sm"
           >
             <AnimatePresence mode="wait">

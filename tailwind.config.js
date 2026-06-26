@@ -30,6 +30,9 @@ module.exports = {
       animation: {
         "fade-in-up": "fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "blur-to-clear": "blur-to-clear 1s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        "float": "float 6s ease-in-out infinite",
+        "shimmer": "shimmer 3s ease-in-out infinite",
+        "pulse-gold": "pulse-gold 2s ease-in-out infinite",
       },
       keyframes: {
         "fade-in-up": {
@@ -39,6 +42,18 @@ module.exports = {
         "blur-to-clear": {
           "0%": { filter: "blur(12px)", opacity: "0" },
           "100%": { filter: "blur(0)", opacity: "1" },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-12px)" },
+        },
+        "shimmer": {
+          "0%, 100%": { opacity: "0.4" },
+          "50%": { opacity: "1" },
+        },
+        "pulse-gold": {
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(197, 168, 128, 0)" },
+          "50%": { boxShadow: "0 0 20px 4px rgba(197, 168, 128, 0.15)" },
         },
       },
     },

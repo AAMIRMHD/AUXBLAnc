@@ -66,9 +66,15 @@ export default function ProcessSection() {
               )}
 
               {/* Step number */}
-              <div className="font-serif italic text-4xl md:text-5xl text-accent-gold font-bold mb-4 relative z-10">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.13 + 0.2, type: "spring", stiffness: 150 }}
+                className="font-serif italic text-4xl md:text-5xl text-accent-gold font-bold mb-4 relative z-10"
+              >
                 {step.num}
-              </div>
+              </motion.div>
 
               {/* Title */}
               <h3 className="font-serif text-xl font-bold text-primary-navy mb-2 relative z-10">

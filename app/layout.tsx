@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import LenisSmoothScroll from "@/components/LenisSmoothScroll";
+import PageTransition from "@/components/PageTransition";
 
 export const metadata: Metadata = {
   title: "Aux Blanc Financial Advisory | Premium Business Consultancy & Accounting",
@@ -65,6 +66,7 @@ export default function RootLayout({
       </head>
       <body>
         <LenisSmoothScroll>
+          <PageTransition />
           {children}
         </LenisSmoothScroll>
       </body>

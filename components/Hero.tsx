@@ -1,11 +1,23 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import ParallaxOrbs from "@/components/ParallaxOrbs";
 
 const headline1 = "Your Trusted Partner for";
 const headline2Words = ["Business,", "Finance", "&"];
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const contentScale = useTransform(scrollYProgress, [0, 0.8], [1, 0.96]);
+
   const whatsappUrl =
     "https://wa.me/917591938118?text=Hi%20Aux%20Blanc%20Financial%20Advisory%2C%20I%20would%20like%20to%20know%20more%20about%20your%2520services.";
 
@@ -73,10 +85,28 @@ export default function Hero() {
 
   return (
     <section
+      ref={sectionRef}
       id="home"
       className="min-h-screen pt-28 md:pt-36 pb-12 flex flex-col justify-between relative overflow-hidden bg-background-ivory"
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 w-full flex flex-col justify-center flex-1 relative z-20">
+      <ParallaxOrbs />
+
+      {/* Floating accent rings */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+        className="absolute top-1/4 right-[10%] w-64 h-64 border border-accent-gold/[0.08] rounded-full pointer-events-none"
+      />
+      <motion.div
+        animate={{ rotate: -360 }}
+        transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+        className="absolute bottom-1/4 left-[5%] w-40 h-40 border border-primary-navy/[0.05] rounded-full pointer-events-none"
+      />
+
+      <motion.div
+        style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}
+        className="max-w-7xl mx-auto px-6 md:px-12 w-full flex flex-col justify-center flex-1 relative z-20"
+      >
 
         {/* ── Accent Label ── */}
         <motion.div
@@ -212,7 +242,32 @@ export default function Hero() {
           </motion.a>
         </motion.div>
 
-      </div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.a
+        href="#services"
+        onClick={(e) => {
+          e.preventDefault();
+          document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
+        }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.4, duration: 0.8, ease }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 cursor-pointer group"
+        aria-label="Scroll to services"
+      >
+        <span className="font-sans text-[9px] font-bold tracking-[0.3em] text-charcoal/40 uppercase group-hover:text-accent-gold transition-colors duration-300">
+          Explore
+        </span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          className="w-5 h-8 rounded-full border border-accent-gold/40 flex items-start justify-center p-1.5 group-hover:border-accent-gold transition-colors duration-300"
+        >
+          <motion.div className="w-1 h-1.5 rounded-full bg-accent-gold" />
+        </motion.div>
+      </motion.a>
     </section>
   );
 }

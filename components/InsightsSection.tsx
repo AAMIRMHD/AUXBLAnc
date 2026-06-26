@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 interface Article {
   title: string;
@@ -10,6 +11,13 @@ interface Article {
 }
 
 export default function InsightsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const orbY = useTransform(scrollYProgress, [0, 1], [-60, 80]);
+
   const articles: Article[] = [
     {
       category: "Incorporation Strategy",
@@ -55,9 +63,12 @@ export default function InsightsSection() {
   };
 
   return (
-    <section id="insights" className="py-24 bg-background-ivory relative border-b border-slate-100 overflow-hidden">
-      {/* Decorative orb */}
-      <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-accent-gold/5 rounded-full blur-[100px] pointer-events-none" />
+    <section ref={sectionRef} id="insights" className="py-24 bg-background-ivory relative border-b border-slate-100 overflow-hidden">
+      {/* Parallax decorative orb */}
+      <motion.div
+        style={{ y: orbY }}
+        className="absolute -bottom-32 -left-32 w-80 h-80 bg-accent-gold/5 rounded-full blur-[100px] pointer-events-none"
+      />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-20">
 
@@ -91,11 +102,12 @@ export default function InsightsSection() {
               key={idx}
               variants={cardVariants}
               whileHover={{
-                scale: 1.04,
-                rotateX: -2,
-                rotateY: 2,
+                scale: 1.05,
+                rotateX: -4,
+                rotateY: 4,
+                y: -8,
                 boxShadow: "0 30px 60px -15px rgba(10,29,55,0.12), 0 0 0 1px rgba(197,168,128,0.2)",
-                transition: { duration: 0.3, ease: "easeOut" },
+                transition: { duration: 0.35, ease: "easeOut" },
               }}
               className="premium-card p-8 flex flex-col justify-start h-full group"
               style={{ transformStyle: "preserve-3d", willChange: "transform" }}
