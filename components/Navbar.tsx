@@ -76,7 +76,7 @@ export default function Navbar() {
       <motion.header
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 1.6 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className={`fixed z-50 transition-all duration-500 ease-out ${
           isScrolled
             ? "top-4 left-4 right-4 md:left-8 md:right-8 max-w-7xl mx-auto py-2.5 bg-white/90 backdrop-blur-md border border-slate-200/40 shadow-lg rounded-full overflow-hidden"
